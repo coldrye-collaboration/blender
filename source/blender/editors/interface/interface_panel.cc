@@ -1294,7 +1294,8 @@ void UI_panel_category_draw_all(ARegion *region, const char *category_id_active)
   const float aspect = ((uiBlock *)region->uiblocks.first)->aspect;
   const float zoom = 1.0f / aspect;
   const int px = U.pixelsize;
-  const int category_tabs_width = round_fl_to_int(UI_PANEL_CATEGORY_MARGIN_WIDTH * zoom);
+  // TODO cdr:horizontal tabs:increase tab width
+  const int category_tabs_width = round_fl_to_int(UI_PANEL_CATEGORY_MARGIN_WIDTH * 3 * zoom);
   const float dpi_fac = UI_DPI_FAC;
   /* Padding of tabs around text. */
   const int tab_v_pad_text = round_fl_to_int(TABS_PADDING_TEXT_FACTOR * dpi_fac * zoom) + 2 * px;
@@ -1340,7 +1341,8 @@ void UI_panel_category_draw_all(ARegion *region, const char *category_id_active)
 
   is_alpha = (region->overlap && (theme_col_back[3] != 255));
 
-  BLF_enable(fontid, BLF_ROTATION);
+  // TODO cdr:horizontal tabs:disable font rotation
+  BLF_enable(fontid, 0); // BLF_ROTATION);
   BLF_rotation(fontid, M_PI_2);
   ui_fontscale(&fstyle_points, aspect);
   BLF_size(fontid, fstyle_points * U.pixelsize, U.dpi);
@@ -1358,13 +1360,14 @@ void UI_panel_category_draw_all(ARegion *region, const char *category_id_active)
     const char *category_id_draw = IFACE_(category_id);
     const int category_width = BLF_width(fontid, category_id_draw, BLF_DRAW_STR_DUMMY_MAX);
 
-    rct->xmin = rct_xmin;
-    rct->xmax = rct_xmax;
+    // TODO cdr:horizontal tabs:adjust rct for category
+    rct->xmin = rct_xmin;  // - (category_width);
+    rct->xmax = rct_xmax;  // - (y_ofs);
 
-    rct->ymin = v2d->mask.ymax - (y_ofs + category_width + (tab_v_pad_text * 2));
+    rct->ymin = v2d->mask.ymax - (y_ofs + (tab_v_pad_text * 2));    // - (y_ofs + category_width + (tab_v_pad_text * 2));
     rct->ymax = v2d->mask.ymax - (y_ofs);
 
-    y_ofs += category_width + tab_v_pad + (tab_v_pad_text * 2);
+    y_ofs += y_ofs + tab_v_pad + (tab_v_pad_text * 2);  // y_ofs + category_width + tab_v_pad + (tab_v_pad_text * 2);
   }
 
   if (y_ofs > BLI_rcti_size_y(&v2d->mask)) {

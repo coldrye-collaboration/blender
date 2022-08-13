@@ -272,6 +272,7 @@ static SpaceLink *view3d_create(const ScrArea *UNUSED(area), const Scene *scene)
   region->alignment = RGN_ALIGN_LEFT;
   region->flag = RGN_FLAG_HIDDEN;
 
+  // TODO cdr:horizontal sidebar:region allocation
   /* buttons/list view */
   region = MEM_callocN(sizeof(ARegion), "buttons for view3d");
 
@@ -2003,6 +2004,7 @@ void ED_spacetype_view3d(void)
   art->lock = 1; /* can become flag, see BKE_spacedata_draw_locks */
   BLI_addhead(&st->regiontypes, art);
 
+  // TODO cdr:horizontal sidebar:region type
   /* regions: listview/buttons */
   art = MEM_callocN(sizeof(ARegionType), "spacetype view3d buttons region");
   art->regionid = RGN_TYPE_UI;
