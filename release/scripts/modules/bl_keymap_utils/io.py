@@ -136,6 +136,7 @@ def keyconfig_export_as_data(wm, kc, filepath, *, all_keymaps=False):
     for km in wm.keyconfigs.user.keymaps:
         if all_keymaps or km.is_user_modified:
             edited_kc.keymaps.append(km)
+    # TODO cdr:better keymaps export: must reduce
     # merge edited keymaps with non-default keyconfig, if it exists
     if kc != wm.keyconfigs.default:
         export_keymaps = keyconfig_merge(edited_kc, kc)
